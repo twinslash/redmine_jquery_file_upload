@@ -1,0 +1,26 @@
+<!--
+  - jquery.min.js         : A minified version of the JQuery JavaScript library, which provides a number of basic functions
+  - tmpl.min.js           : The Templates plugin is included to render the upload/download listings
+  - load-image.min.js     : The Load Image plugin is included for the preview images and image resizing functionality
+  - canvas-to-blob.min.js : The Canvas to Blob plugin is included for image resizing functionality
+-->
+
+<% %w{ jquery.min.js tmpl.min.js load-image.min.js canvas-to-blob.min.js }.each do |js_plugin| %>
+  <%= javascript_include_tag js_plugin, plugin: 'redmine_jquery_file_upload' %>
+<% end %>
+
+<!--
+  - jquery.ui.widget.js        : The jQuery UI widget factory, can be omitted if jQuery UI is already included
+  - jquery.iframe-transport.js : The Iframe Transport is required for browsers without support for XHR file uploads
+  - jquery.fileupload.js       : The basic File Upload plugin
+  - jquery.fileupload-fp.js    : The File Upload file processing plugin
+  - jquery.fileupload-ui.js    : The File Upload user interface plugin
+  - main.js                    : The main application script
+-->
+
+<% %w{ jquery.ui.widget.js jquery.iframe-transport.js jquery.fileupload.js jquery.fileupload-fp.js jquery.fileupload-ui.js main.js }.each do |js_file| %>
+  <%= javascript_include_tag "jQuery-File-Upload/#{ js_file }", plugin: 'redmine_jquery_file_upload' %>
+<% end %>
+
+<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
+<!--[if gte IE 8]><script src="js/cors/jquery.xdr-transport.js"></script><![endif]-->
