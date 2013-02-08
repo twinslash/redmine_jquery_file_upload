@@ -9,5 +9,3 @@ Redmine::Plugin.register :redmine_jquery_file_upload do
   author_url 'https://github.com/twinslash'
   settings default: { tmpdir: 'tmp/jquery_files' }
 end
-
-RedmineJqueryFileUpload.mktmpdir unless Dir.exist?(RedmineJqueryFileUpload.tmpdir)

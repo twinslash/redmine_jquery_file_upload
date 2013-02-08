@@ -25,8 +25,3 @@ module RedmineJqueryFileUpload
     end
   end
 end
-
-
-unless FilesController.included_modules.include?(RedmineJqueryFileUpload::Patches::Controllers::FilesControllerPatch)
-  FilesController.send(:include, RedmineJqueryFileUpload::Patches::Controllers::FilesControllerPatch)
-end
