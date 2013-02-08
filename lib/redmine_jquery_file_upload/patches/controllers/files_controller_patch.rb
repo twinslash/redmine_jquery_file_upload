@@ -6,7 +6,9 @@ module RedmineJqueryFileUpload
         def self.included(base)
           base.class_eval do
             include RedmineJqueryFileUpload::JqueryViewsManager
-            replace_attachments_form_for [:new]
+            include RedmineJqueryFileUpload::JqueryAttachmentsManager
+            replace_attachments_form_for :new
+            loads_jquery_attachments_before :create
 
             include InstanceMethods
           end

@@ -5,7 +5,7 @@
         {% if (file.error) { %}
             <td></td>
             <td class="name"><span>{%=file.name%}</span></td>
-            <td><span><input type="text" name="attachment[{%=file.tempFileOrder%}][description]"></span></td>
+            <td><span><input type="text" name="attachments[{%=file.tempFileOrder%}][description]"></span></td>
             <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
             <td class="error" colspan="2"><span class="label label-important"><%= l('error_upload') %></span>{%=file.error%}</td>
         {% } else { %}
@@ -15,7 +15,7 @@
             <td class="name">
                 <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
             </td>
-            <td><span><input type="text" name="attachment[{%=file.tempFileOrder%}][description]"></span></td>
+            <td><span><input type="text" name="attachments[{%=file.tempFileOrder%}][description]"></span></td>
             <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
             <td colspan="2"></td>
         {% } %}

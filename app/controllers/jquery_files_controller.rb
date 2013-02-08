@@ -8,9 +8,10 @@ class JqueryFilesController < ApplicationController
   end
 
   def create
-    tempFolderPath = mkfolder(params[:tempFolderName])
+    tempFolderPath = mkfolder(sanitize_filename(params[:tempFolderName]))
     response = []
     params[:tempFileOrder].each_with_index do |order, index|
+      order = sanitize_filename(order)
       file = params[:files][index]
       store(file, order, tempFolderPath)
       store_metadata(file, order, tempFolderPath)

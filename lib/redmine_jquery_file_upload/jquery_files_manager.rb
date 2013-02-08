@@ -1,13 +1,17 @@
 module RedmineJqueryFileUpload
   module JqueryFilesManager
+    def self.sanitize_filename(filename)
+        filename.gsub(%r{[^\w\s\-]}, '').gsub(%r{\s+(\-+\s*)?}, '-')
+    end
+
     private
 
     def sanitize_filename(filename)
-      filename.gsub(%r{[^\w\s\-]}, '').gsub(%r{\s+(\-+\s*)?}, '-')
+      RedmineJqueryFileUpload::JqueryFilesManager::sanitize_filename(filename)
     end
 
     def mkfolder(folder_name)
-      path = File.join(RedmineJqueryFileUpload.tmpdir, sanitize_filename(folder_name))
+      path = File.join(RedmineJqueryFileUpload.tmpdir, folder_name)
       Dir.mkdir(path) unless Dir.exist?(path)
       path
     end
@@ -18,7 +22,10 @@ module RedmineJqueryFileUpload
 
     def store_metadata(file, order, folder)
       File.open(File.join(folder, "#{order}.metadata"), 'w') do |f|
-        f.write(file.to_json)
+        metadata = { filename: file.original_filename,
+                     type: file.content_type,
+                     head: file.headers }
+        f.write(metadata.to_json)
       end
     end
 

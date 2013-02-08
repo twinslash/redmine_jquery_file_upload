@@ -1,13 +1,13 @@
 module RedmineJqueryFileUpload
-
   module JqueryViewsManager
+
     def self.included(base)
       base.extend ClassMethods
       base.send(:include, InstanceMethods)
     end
 
     module ClassMethods
-      def replace_attachments_form_for(actions = [])
+      def replace_attachments_form_for(*actions)
         actions.each do |action|
           define_method "#{action}_with_jquery_file_uploader" do
             send "#{action}_without_jquery_file_uploader"
@@ -23,6 +23,6 @@ module RedmineJqueryFileUpload
 
     module InstanceMethods
     end
-  end
 
+  end
 end
