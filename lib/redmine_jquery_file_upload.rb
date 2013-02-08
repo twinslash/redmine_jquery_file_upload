@@ -1,6 +1,7 @@
 Rails.configuration.to_prepare do
   require_dependency 'setting'
   require_dependency 'redmine_jquery_file_upload/jquery_files_manager'
+  require_dependency 'redmine_jquery_file_upload/jquery_attachments_manager'
   require_dependency 'redmine_jquery_file_upload/jquery_views_manager'
   require_dependency 'redmine_jquery_file_upload/patches/controllers/files_controller_patch'
 end

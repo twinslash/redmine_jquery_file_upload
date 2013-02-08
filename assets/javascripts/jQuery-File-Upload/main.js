@@ -16,14 +16,14 @@ $(function () {
     'use strict';
     var tempFolderName = randomKey(40), tempFilesCount = 0;
 
-    $('div.container form').append('<input type="text" value="' + tempFolderName + '">');
+    $('div.#content form').append('<input type="text" value="' + tempFolderName + '" name="tempFolderName" style="display:none">');
 
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
         // Uncomment the following to send cross-domain cookies:
         // xhrFields: {withCredentials: true},
-        url: '/jquery_files?tempFolderName=' + tempFolderName
-        //autoUpload: true
+        url: '/jquery_files?tempFolderName=' + tempFolderName,
+        autoUpload: true
     });
 
 
@@ -36,8 +36,8 @@ $(function () {
     $('#fileupload').bind('fileuploadsubmit', function(e, data) {
         var old_url = $('#fileupload').fileupload('option', 'url');
         $('#fileupload').fileupload('option', { url: (function() {
-                var regexp = /tempFileOrder=[^&]*/;
-                var tempFileOrder = 'tempFileOrder=' + data.files[0].tempFileOrder;
+                var regexp = /(tempFileOrder\[\]=[\d]*&)*tempFileOrder\[\]=[\d]*/;
+                var tempFileOrder = data.files.map(function (file) { return 'tempFileOrder[]=' + file.tempFileOrder; }).join('&');
                 if( old_url.match(regexp) ) {
                     return old_url.replace(regexp, tempFileOrder);
                 } else {
