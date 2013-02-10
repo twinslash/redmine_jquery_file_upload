@@ -23,13 +23,15 @@ $(function () {
         // Uncomment the following to send cross-domain cookies:
         // xhrFields: {withCredentials: true},
         url: '/jquery_files?tempFolderName=' + tempFolderName,
-        autoUpload: true
+        type: 'POST'
+        //autoUpload: true
     });
 
 
     $('#fileupload').bind('fileuploadadd', function (e, data) {
         $.each(data.files, function(index, file) {
             file.tempFileOrder = ++tempFilesCount;
+            console.log(data);
         });
     });
 

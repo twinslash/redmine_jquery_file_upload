@@ -17,7 +17,8 @@ module RedmineJqueryFileUpload
       private
 
       def load_jquery_attachments
-        folder_name = RedmineJqueryFileUpload::JqueryFilesManager::sanitize_filename(params[:tempFolderName])
+        folder_name = RedmineJqueryFileUpload::JqueryFilesManager.sanitize_filename(params[:tempFolderName])
+        return if folder_name.blank?
         folder = File.join(RedmineJqueryFileUpload.tmpdir, folder_name)
         return unless Dir.exist?(folder)
         file, tempfile = nil

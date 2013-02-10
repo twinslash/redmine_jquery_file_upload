@@ -1,21 +1,24 @@
 class JqueryFilesController < ApplicationController
   unloadable
 
-  include RedmineJqueryFileUpload::JqueryFilesManager
-
   def index
     head :ok
   end
 
+  def new
+    render file: File.join(Rails.root, 'plugins', 'redmine_jquery_file_upload', 'app', 'views', 'shared', 'attachments_form'), layout: false
+  end
+
   def create
-    tempFolderPath = mkfolder(sanitize_filename(params[:tempFolderName]))
     response = []
-    params[:tempFileOrder].each_with_index do |order, index|
-      order = sanitize_filename(order)
-      file = params[:files][index]
-      store(file, order, tempFolderPath)
-      store_metadata(file, order, tempFolderPath)
-      response << to_responce(file, order, tempFolderPath, params[:authenticity_token])
+    if params[:tempFileOrder] && params[:files] && params[:tempFileOrder].size.equal?(params[:files].size)
+      jquery_files_manager = RedmineJqueryFileUpload::JqueryFilesManager.new(params[:tempFolderName])
+      params[:tempFileOrder].each_with_index do |order, index|
+        file = params[:files][index]
+        jquery_files_manager.store(file, order)
+        jquery_files_manager.store_metadata(file, order)
+        response << jquery_files_manager.to_responce(file, order, params[:authenticity_token])
+      end
     end
 
     respond_to do |format|

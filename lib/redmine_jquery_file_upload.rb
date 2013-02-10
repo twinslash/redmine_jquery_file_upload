@@ -1,11 +1,36 @@
 require_dependency 'redmine_jquery_file_upload/jquery_files_manager'
 require_dependency 'redmine_jquery_file_upload/jquery_attachments_manager'
-require_dependency 'redmine_jquery_file_upload/jquery_views_manager'
-require_dependency 'redmine_jquery_file_upload/patches/controllers/files_controller_patch'
+require_dependency 'redmine_jquery_file_upload/hooks/jquery_file_upload_hook_listener'
 
 Rails.configuration.to_prepare do
-  FilesController.send(:include, RedmineJqueryFileUpload::Patches::Controllers::FilesControllerPatch)
   RedmineJqueryFileUpload.mktmpdir
+
+  [DocumentsController, FilesController, IssuesController, MessagesController, NewsController, WikiController].each { |controller| controller.send(:include, RedmineJqueryFileUpload::JqueryAttachmentsManager) }
+
+  DocumentsController.class_eval do
+    loads_jquery_attachments_before :create, :add_attachment
+  end
+
+  FilesController.class_eval do
+    loads_jquery_attachments_before :create
+  end
+
+  IssuesController.class_eval do
+    loads_jquery_attachments_before :create, :update
+  end
+
+  MessagesController.class_eval do
+    loads_jquery_attachments_before :new, :reply, :edit
+  end
+
+  NewsController.class_eval do
+    loads_jquery_attachments_before :create, :update
+  end
+
+  WikiController.class_eval do
+    loads_jquery_attachments_before :update, :add_attachment
+  end
+
 end
 
 module RedmineJqueryFileUpload
@@ -16,5 +41,4 @@ module RedmineJqueryFileUpload
   def self.mktmpdir
     FileUtils.mkdir_p(self.tmpdir) unless Dir.exist?(self.tmpdir)
   end
-
 end
