@@ -71,7 +71,7 @@ $(function () {
             subnode.attr('data-xhr-fields', '{"withCredentials":true}');
         }
         node.find('.cancel').attr('class', 'delete');
-        node.find('.fileupload-progress').hide();
+        node.find('.meter').hide();
         return node;
     }
 
