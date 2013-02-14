@@ -201,7 +201,7 @@ $(function () {
     $('#attachments_fields').bind('fileuploadsubmit', function(e, data) {
         var old_url = $('#attachments_fields').fileupload('option', 'url');
         countUploads++;
-        data.form.find('input:submit').attr('disabled', 'disabled');
+        $('#attachments_fields').parents('form').find('input:submit').attr('disabled', 'disabled');
         $('#attachments_fields').fileupload('option', { url: (function() {
                 var regexp = /(tempFileOrder\[\]=[\d]*&)*tempFileOrder\[\]=[\d]*/;
                 var tempFileOrder = data.files.map(function (file) { return 'tempFileOrder[]=' + file.tempFileOrder; }).join('&');
@@ -216,7 +216,7 @@ $(function () {
     });
 
     // Enable iframe cross-domain access via redirect option:
-    $('#fileupload').fileupload(
+    $('#attachments_fields').fileupload(
         'option',
         'redirect',
         window.location.href.replace(
@@ -225,7 +225,7 @@ $(function () {
         )
     );
 
-    $('#fileupload').fileupload('option', {
+    $('#attachments_fields').fileupload('option', {
         // url: '//jquery-file-upload.appspot.com/',
         // maxFileSize: 5000000,
         // acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -255,7 +255,7 @@ $(function () {
             $('<span class="alert alert-error"/>')
                 .text('Upload server currently unavailable - ' +
                         new Date())
-                .appendTo('#fileupload');
+                .appendTo('#attachments_fields');
         });
     }
 
