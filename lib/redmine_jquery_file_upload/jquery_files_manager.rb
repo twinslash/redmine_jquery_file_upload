@@ -19,6 +19,11 @@ module RedmineJqueryFileUpload
     end
 
     def store(file, order)
+      store_file file, order
+      store_metadata file, order
+    end
+
+    def store_file(file, order)
       mkfolder unless @folder_created
       if @folder_created && (order = self.class.sanitize_filename(order)).present?
         FileUtils.cp file.tempfile.path, File.join(RedmineJqueryFileUpload.tmpdir, @folder, "#{order}.data")
@@ -36,6 +41,27 @@ module RedmineJqueryFileUpload
                        head: file.headers }
           f.write(metadata.to_json)
         end
+        return true
+      end
+      return false
+    end
+
+    def delete(order)
+      folder = self.class.sanitize_filename(@folder)
+      if folder.present?
+        filePath = File.join(RedmineJqueryFileUpload.tmpdir, folder, order)
+        File.delete("#{filePath}.data") if File.exist?("#{filePath}.data")
+        File.delete("#{filePath}.metadata") if File.exist?("#{filePath}.metadata")
+        return true
+      end
+      return false
+    end
+
+    def delete
+      folder = self.class.sanitize_filename(@folder)
+      if folder.present?
+        folderPath = File.join(RedmineJqueryFileUpload.tmpdir, folder)
+        FileUtils.rm_rf folderPath if Dir.exist?(folderPath)
         return true
       end
       return false

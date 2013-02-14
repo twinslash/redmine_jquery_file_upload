@@ -1,4 +1,7 @@
-# English strings go here for Rails i18n
 en:
-  error_upload: Error
+  error_upload: "Error: "
   start_upload: Start
+  to_attach_files_use_drag_drop_here_or: "To attach files drag&drop here or "
+  select_files_from_your_computer: "select files from your computer..."
+  cancel_upload: Cancel upload
+  delete_all: Delete all

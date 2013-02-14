@@ -1,3 +1,7 @@
 ru:
-  error_upload: Ошибка
+  error_upload: "Ошибка: "
   start_upload: Начать загрузку
+  to_attach_files_use_drag_drop_here_or: "Чтобы прикрепить файлы используйте drag&drop или "
+  select_files_from_your_computer: "выберите файлы с Вашего компьютера..."
+  cancel_upload: Отменить загрузки
+  delete_all: Удалить все

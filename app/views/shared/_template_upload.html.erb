@@ -3,30 +3,30 @@
 {% for (var i=0, file; file=o.files[i]; i++) { %}
     <tr class="template-upload fade">
         <td class="preview"><span class="fade"></span></td>
-        <td class="name"><span>{%=file.name%}</span></td>
-        <td><span><input type="text" disabled></span></td>
-        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        <td class="name"><span>{%=file.name.truncate()%}</span></td>
+        <td class="size" align="center"><span>({%=o.formatFileSize(file.size)%})</span></td>
+        <td><span><%= text_field_tag 'attachments[{%=file.tempFileOrder%}][description]', '', :id => nil, :class => 'description', :maxlength => 255, :placeholder => l(:label_optional_description) %></span></td>
         {% if (file.error) { %}
-            <td class="error" colspan="2"><span class="label label-important">l('error_upload')</span> {%=file.error%}</td>
+            <td class="error-upload"><span><%= l('error_upload') %>{%=file.error%}</span></td>
         {% } else if (o.files.valid && !i) { %}
-            <td>
-                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
-            </td>
             <td class="start">{% if (!o.options.autoUpload) { %}
-                <button class="btn btn-primary">
-                    <i class="icon-upload icon-white"></i>
-                    <span><%= l('start_upload') %></span>
+                <button class="upload-control">
+                    <a href="#" class="icon icon-start"></a>
                 </button>
             {% } %}</td>
         {% } else { %}
-            <td colspan="2"></td>
+            <td class="empty"></td>
         {% } %}
         <td class="cancel">{% if (!i) { %}
-            <button class="btn btn-warning">
-                <i class="icon-ban-circle icon-white"></i>
-                <span><%= l('button_cancel') %></span>
+            <button class="upload-control">
+                <a href="#" class="icon icon-discard"></a>
             </button>
         {% } %}</td>
+        <td>
+            <div class="fileupload-progress small blue nostripes" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <span class="bar" style="width:0%;"></span>
+            </div>
+        </td>
     </tr>
 {% } %}
 </script>

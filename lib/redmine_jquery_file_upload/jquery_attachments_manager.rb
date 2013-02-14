@@ -9,6 +9,7 @@ module RedmineJqueryFileUpload
     module ClassMethods
       def loads_jquery_attachments_before(*actions)
         before_filter :load_jquery_attachments, only: actions
+        after_filter :delete_tempfolder, only: actions
       end
     end
 
@@ -19,14 +20,14 @@ module RedmineJqueryFileUpload
       def load_jquery_attachments
         folder_name = RedmineJqueryFileUpload::JqueryFilesManager.sanitize_filename(params[:tempFolderName])
         return if folder_name.blank?
-        folder = File.join(RedmineJqueryFileUpload.tmpdir, folder_name)
-        return unless Dir.exist?(folder)
+        @temp_folder = File.join(RedmineJqueryFileUpload.tmpdir, folder_name)
+        return unless Dir.exist?(@temp_folder)
         file, tempfile = nil
         params[:attachments].each do |order, _|
           begin
-            tempfile = File.open(File.join(folder, "#{order}.data"), 'rb')
+            tempfile = File.open(File.join(@temp_folder, "#{order}.data"), 'rb')
 
-            File.open(File.join(folder, "#{order}.metadata"), 'rb') do |f|
+            File.open(File.join(@temp_folder, "#{order}.metadata"), 'rb') do |f|
               opts = JSON::parse(f.read).symbolize_keys.merge(tempfile: tempfile)
               file = ActionDispatch::Http::UploadedFile.new opts
             end
@@ -34,7 +35,10 @@ module RedmineJqueryFileUpload
           end
           params[:attachments][order][:file] = file
         end
-        FileUtils.rm_rf folder
+      end
+
+      def delete_tempfolder
+        FileUtils.rm_rf @temp_folder if Dir.exist?(@temp_folder)
       end
 
     end

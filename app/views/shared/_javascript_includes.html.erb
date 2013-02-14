@@ -18,7 +18,7 @@
   - main.js                    : The main application script
 -->
 
-<% %w{ jquery.ui.widget.js jquery.iframe-transport.js jquery.fileupload.js jquery.fileupload-fp.js jquery.fileupload-ui.js main.js }.each do |js_file| %>
+<% %w{ jquery.iframe-transport.js jquery.ui.widget.js jquery.fileupload.js jquery.fileupload-fp.js jquery.fileupload-ui.js main.js }.each do |js_file| %>
   <%= javascript_include_tag "jQuery-File-Upload/#{ js_file }", plugin: 'redmine_jquery_file_upload' %>
 <% end %>
 

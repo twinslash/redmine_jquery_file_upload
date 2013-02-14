@@ -16,7 +16,6 @@ class JqueryFilesController < ApplicationController
       params[:tempFileOrder].each_with_index do |order, index|
         file = params[:files][index]
         jquery_files_manager.store(file, order)
-        jquery_files_manager.store_metadata(file, order)
         response << jquery_files_manager.to_responce(file, order, params[:authenticity_token])
       end
     end
@@ -33,10 +32,11 @@ class JqueryFilesController < ApplicationController
   end
 
   def destroy
-    filePath = File.join(params[:tempFolderPath], "#{params[:id]}.data")
-    metadataFilePath = File.join(params[:tempFolderPath], "#{params[:id]}.metadata")
-    File.delete(filePath) if File.exist?(filePath)
-    File.delete(metadataFilePath) if File.exist?(metadataFilePath)
+    RedmineJqueryFileUpload::JqueryFilesManager.new(params[:tempFolderName]).delete(params[:id])
     head :ok
+  end
+
+  def destroy_tempfolder
+    RedmineJqueryFileUpload::JqueryFilesManager.new(params[:id]).delete
   end
 end
