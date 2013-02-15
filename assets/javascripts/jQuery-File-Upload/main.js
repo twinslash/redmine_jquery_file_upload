@@ -23,6 +23,13 @@ $(function () {
         return this.length > length ? this.substring(0, l).concat(truncateString) : this;
     }
 
+    // this prevents deletion session after ajax requests
+    $(document).ajaxSend(function(e, xhr, options) {
+        var token = $("meta[name='csrf-token']").attr("content");
+        xhr.setRequestHeader("X-CSRF-Token", token);
+    });
+
+
     // tempFolderName value used to find folder from which load files after submit
     var tempFolderName = randomKey(40), tempFilesCount = 0;
     $('div.#content form').append('<input type="text" value="' + tempFolderName + '" name="tempFolderName" style="display:none">');
@@ -41,9 +48,18 @@ $(function () {
         }
     }
 
-    // this hook makes possible to hide input[type="file"] under link
-    var uploadButtonWidth = $('#upload_button').width(), uploadButtonHeight = $('#upload_button').height();
-    $('#upload_input').width(uploadButtonWidth + 10).height(uploadButtonHeight + 2).css('left', -(uploadButtonWidth + 5)).css('top', -1);
+   // this function makes file input the same size as link "select files from your computer..."
+    function resizeFileInput() {
+        var uploadButtonWidth = $('#upload_button').width(), uploadButtonHeight = $('#upload_button').height();
+        $('#upload_input').width(uploadButtonWidth + 10).height(uploadButtonHeight + 2).css('left', -(uploadButtonWidth + 5)).css('top', -1);
+    };
+
+    // set approprate size to input[type="file"]
+    resizeFileInput();
+    // if form hidden we need make call to resizeFileInput after form shown to set approprate size to input[type="file"]
+    var $fn_show = $.fn.show;
+    $.fn.show = function(a, b, c) { this.each(function() { var $this = $(this); $fn_show.apply($this, a, b, c); $this.trigger('afterShow'); }); }
+    $('#main').bind('afterShow', resizeFileInput);
 
     // countUploads holds number of files that added but not yet uploaded;
     // countUploaded stores number of actually uploaded files without deleted
@@ -82,6 +98,9 @@ $(function () {
         url: '/jquery_files?tempFolderName=' + tempFolderName,
         type: 'POST',
         autoUpload: true,
+        xhrFields: {
+            withCredentials: true
+        },
         //this function replace native jQueryFileUpload done function to prevent render downloadTemplate
         done: function (e, data) {
             var that = $(this).data('fileupload'),

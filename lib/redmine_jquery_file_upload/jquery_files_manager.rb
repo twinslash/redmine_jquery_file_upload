@@ -57,7 +57,7 @@ module RedmineJqueryFileUpload
       return false
     end
 
-    def delete
+    def delete_folder
       folder = self.class.sanitize_filename(@folder)
       if folder.present?
         folderPath = File.join(RedmineJqueryFileUpload.tmpdir, folder)
@@ -67,12 +67,13 @@ module RedmineJqueryFileUpload
       return false
     end
 
-    def to_responce(file, order, token)
+    def to_responce(file, order)
       { url: File.join(RedmineJqueryFileUpload.tmpdir, @folder, order),
         name: file.original_filename,
         size: file.tempfile.size,
-        delete_url: "/jquery_files/#{order}?tempFolderName=#{@folder}&authenticity_token=#{token}",
+        delete_url: "/jquery_files/#{order}?tempFolderName=#{@folder}",
         delete_type: 'DELETE',
+        delete_with_credentials: true,
         tempFileOrder: order }
     end
 

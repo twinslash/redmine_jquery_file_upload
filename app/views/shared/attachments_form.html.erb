@@ -5,33 +5,31 @@
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
 <!-- The file upload form used as target for the file upload widget -->
-<span id="attachments_fields">
-  <div class="fileupload-buttonbar">
-    <span style="display:block">
-      <%= image_tag 'clip_icon.png', plugin: 'redmine_jquery_file_upload' %>
-      <%= l('to_attach_files_use_drag_drop_here_or') %><a id="upload_button" href="javascript:void(0);"><%= l('select_files_from_your_computer') %></a>
-      <input type="file" id="upload_input" name="files[]" class="transparent" multiple>
+<div class="fileupload-buttonbar">
+  <span style="display:block">
+    <%= image_tag 'clip_icon.png', plugin: 'redmine_jquery_file_upload' %>
+    <%= l('to_attach_files_use_drag_drop_here_or') %><a id="upload_button" href="javascript:void(0);"><%= l('select_files_from_your_computer') %></a>
+    <input type="file" id="upload_input" name="files[]" class="transparent" multiple>
+  </span>
+  <span class="fileupload-progress fade">
+    <span class="meter large blue animate" style="display:inline-block">
+      <span class="bar" style="width:0%"><span></span></span>
+      <div class="progress-extended"></div>
     </span>
-    <span class="fileupload-progress fade">
-      <span class="meter large blue animate" style="display:inline-block">
-        <span class="bar" style="width:0%"><span></span></span>
-        <div class="progress-extended"></div>
-      </span>
-      <a href="#" type="reset" class="icon icon-discard cancel" style="position:relative;top:-2px;"></a>
-    </span>
-    <table role="presentation">
-      <thead>
-        <tr class="fade">
-          <td colspan="5"></td>
-          <td><button class="upload-control"><a href="#" type="reset" class="icon icon-del delete"></a></button><input type="checkbox" class="toggle" style="margin-left:8px"></td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody class="files">
-      </tbody>
-    </table>
-  </div>
-</span>
+    <a href="#" type="reset" class="icon icon-discard cancel" style="position:relative;top:-2px;"></a>
+  </span>
+  <table role="presentation">
+    <thead>
+      <tr class="fade">
+        <td colspan="5"></td>
+        <td><button class="upload-control"><a href="#" type="reset" class="icon icon-del delete"></a></button><input type="checkbox" class="toggle" style="margin-left:8px"></td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody class="files">
+    </tbody>
+  </table>
+</div>
 
 <%= render 'shared/template_upload' %>
 <%= render 'shared/template_download' %>
