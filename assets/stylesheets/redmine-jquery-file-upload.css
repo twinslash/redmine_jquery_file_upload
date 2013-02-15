@@ -31,6 +31,13 @@
   width: 22px;
 }
 
+.progress-extended {
+  display: inline;
+  margin-left: 10px;
+  position: relative;
+  top: -1px;
+}
+
 .meter {
   height: 20px;  /* Can be anything */
   position: relative;
@@ -55,7 +62,7 @@
 .meter.large {
   margin: 0;
   height: 12px;
-  width: 370px;
+  width: 120px;
   padding: 0;
   border: 1px solid gray;
 }
