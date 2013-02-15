@@ -6,7 +6,7 @@ $(function () {
         $("#attachments_fields").parent().find('.add_attachment').remove()
         $.ajax({
             url: "/jquery_files/new",
-            success: function (form) { $("#attachments_fields").prepend(form); return false; }
+            success: function (form) { $("#attachments_fields").append(form); return false; }
         });
     }
 });
