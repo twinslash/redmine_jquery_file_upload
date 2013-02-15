@@ -39,14 +39,15 @@ $(function () {
     $('form').bind('submit', function () { isFormSubmitted = true; })
 
     // remove temp folder if the form was not submitted
-    window.onbeforeunload = function () {
+    $(window).unload(function () {
         if(!isFormSubmitted) {
             $.ajax({
                 url: '/jquery_files/' + tempFolderName + '/destroy_tempfolder',
-                type: 'DELETE'
-            })
+                type: 'DELETE',
+                async: false
+            });
         }
-    }
+    });
 
    // this function makes file input the same size as link "select files from your computer..."
     function resizeFileInput() {
@@ -58,7 +59,7 @@ $(function () {
     resizeFileInput();
     // if form hidden we need make call to resizeFileInput after form shown to set approprate size to input[type="file"]
     var $fn_show = $.fn.show;
-    $.fn.show = function(a, b, c) { this.each(function() { var $this = $(this); $fn_show.apply($this, a, b, c); $this.trigger('afterShow'); }); }
+    $.fn.show = function(a, b, c) { var return_value = $fn_show.apply(this, a, b, c); this.each(function() { $(this).trigger('afterShow') }); return return_value; }
     $('#main').bind('afterShow', resizeFileInput);
 
     // countUploads holds number of files that added but not yet uploaded;
