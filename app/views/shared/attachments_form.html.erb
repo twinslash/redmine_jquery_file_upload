@@ -12,17 +12,19 @@
     <input type="file" id="upload_input" name="files[]" class="transparent" multiple>
   </span>
   <span class="fileupload-progress fade">
+    <button class="upload-control cancel">
+      <a href="#" type="reset" class="icon icon-discard" style="position:relative;top:-2px"></a>
+    </button>
     <span class="meter large blue animate" style="display:inline-block">
       <span class="bar" style="width:0%"><span></span></span>
-      <div class="progress-extended"></div>
     </span>
-    <a href="#" type="reset" class="icon icon-discard cancel" style="position:relative;top:-2px;"></a>
+    <div class="progress-extended" style="display:inline"></div>
   </span>
   <table role="presentation">
     <thead>
       <tr class="fade">
         <td colspan="5"></td>
-        <td><button class="upload-control"><a href="#" type="reset" class="icon icon-del delete"></a></button><input type="checkbox" class="toggle" style="margin-left:8px"></td>
+        <td><button class="upload-control delete"><a href="#" type="reset" class="icon icon-del"></a></button><input type="checkbox" class="toggle" style="margin-left:8px"></td>
         <td></td>
       </tr>
     </thead>

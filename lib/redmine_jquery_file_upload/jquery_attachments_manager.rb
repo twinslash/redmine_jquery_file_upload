@@ -23,7 +23,7 @@ module RedmineJqueryFileUpload
         @temp_folder = File.join(RedmineJqueryFileUpload.tmpdir, folder_name)
         return unless Dir.exist?(@temp_folder)
         file, tempfile = nil
-        params[:attachments].each do |order, _|
+        params[:attachments] && params[:attachments].each do |order, attachment|
           begin
             tempfile = File.open(File.join(@temp_folder, "#{order}.data"), 'rb')
 
@@ -33,7 +33,7 @@ module RedmineJqueryFileUpload
             end
           rescue Errno::ENOENT
           end
-          params[:attachments][order][:file] = file
+          attachment[:file] = file
         end
       end
 
