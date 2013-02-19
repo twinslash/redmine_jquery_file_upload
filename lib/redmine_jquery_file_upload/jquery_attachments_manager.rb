@@ -29,6 +29,7 @@ module RedmineJqueryFileUpload
 
             File.open(File.join(@temp_folder, "#{order}.metadata"), 'rb') do |f|
               opts = JSON::parse(f.read).symbolize_keys.merge(tempfile: tempfile)
+              opts[:filename] = attachment[:name] if attachment[:name]
               file = ActionDispatch::Http::UploadedFile.new opts
             end
           rescue Errno::ENOENT

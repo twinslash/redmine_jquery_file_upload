@@ -5,7 +5,7 @@
   - canvas-to-blob.min.js : The Canvas to Blob plugin is included for image resizing functionality
 -->
 
-<% %w{ jquery.min.js tmpl.min.js load-image.min.js canvas-to-blob.min.js }.each do |js_plugin| %>
+<% %w{ tmpl.min.js load-image.min.js canvas-to-blob.min.js }.each do |js_plugin| %>
   <%= javascript_include_tag js_plugin, plugin: 'redmine_jquery_file_upload' %>
 <% end %>
 

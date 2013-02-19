@@ -1,0 +1,29 @@
+<%= stylesheet_link_tag    'jquery.Jcrop-0.9.10.min.css', plugin: 'redmine_jquery_file_upload', media: 'all' %>
+<%= stylesheet_link_tag    'clipboard_image_paste.css',   plugin: 'redmine_jquery_file_upload', media: 'all' %>
+<%
+  if !$clipboard_image_paste_has_jquery
+%>
+  <%= stylesheet_link_tag    'jquery-ui-1.9.2.min.css',     plugin: 'redmine_jquery_file_upload', :media => 'all' %>
+  <%= javascript_include_tag 'jquery-1.7.2.min.js',         plugin: 'redmine_jquery_file_upload' %>
+  <%= javascript_include_tag 'jquery-ui-1.9.2.min.js',      plugin: 'redmine_jquery_file_upload' %>
+<%
+  end
+%>
+<%= javascript_include_tag 'load-fileupload.js',          plugin: 'redmine_jquery_file_upload' %>
+<%= javascript_include_tag 'jcrop-0.9.10.min.js',         plugin: 'redmine_jquery_file_upload' %>
+<%= javascript_include_tag 'clipboard_image_paste.js',    plugin: 'redmine_jquery_file_upload' %>
+<%
+  if !$clipboard_image_paste_has_jquery
+%>
+  <script type="text/javascript">
+    var j$cbp = $.noConflict(true);
+  </script>
+<%
+  else
+%>
+  <script type="text/javascript">
+    var j$cbp = $;
+  </script>
+<%
+  end
+%>

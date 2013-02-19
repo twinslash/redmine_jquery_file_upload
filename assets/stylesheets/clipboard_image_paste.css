@@ -1,0 +1,81 @@
+/*******************************************************************************
+// clipboard_image_paste Redmine plugin stylesheet.
+//
+// Authors:
+// - Richard Pecl
+//
+// Terms of use:
+// - GNU GENERAL PUBLIC LICENSE Version 2
+*******************************************************************************/
+
+.cbp_drop_shadow {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#cbp_thumbnail {
+  background: green;
+}
+
+#cbp_instructions {
+  font-size: 80%;
+  height: 2.6em;
+}
+
+#cbp_panel_box {
+  margin-top: 0.5em;
+  border: 5px solid #aaa;
+  background: #ddd;
+}
+
+#cbp_paste_catcher {
+  width: 0px;
+  height: 0px;
+  font-size: 0px;
+  position: absolute;
+  top: -5px;
+}
+
+#cbp_images_form {
+  display: block;
+}
+
+#cbp_attach_thumbnail_box {
+  display: inline-block;
+  width: 80px;
+}
+
+#cbp_attach_thumbnail {
+  max-width: 80px;
+  max-height: 80px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#cbp_image_field > .name {
+  width: 20ex;
+  margin-left: 20px;
+}
+
+#cbp_image_field span, #cbp_image_field img {
+  vertical-align: middle;
+}
+
+/* same style as redmine's #attachments_fields */
+#cbp_image_fields > span {
+  display: block;
+  white-space: nowrap;
+  padding: 5px 5px;
+}
+
+#cbp_image_fields input.description {
+  margin-left: 8px;
+  width: 340px;
+}
+
+#cbp_link_dlg input {
+  border: 1px solid lightgrey;
+  min-width: 40ex;
+}
+
+.cbp_dlg_small {
+  font-size: 10pt;
+}

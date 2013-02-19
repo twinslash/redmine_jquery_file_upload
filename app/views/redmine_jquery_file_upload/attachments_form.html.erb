@@ -11,21 +11,27 @@
     <%= l('to_attach_files_use_drag_drop_here_or') %><a id="upload_button" href="javascript:void(0);"><%= l('select_files_from_your_computer') %></a>
     <input type="file" id="upload_input" name="files[]" class="transparent" multiple>
   </span>
-  <span class="fileupload-progress fade">
-    <span class="meter large blue animate" style="display:inline-block">
-      <span class="bar" style="width:0%"><span></span></span>
-    </span>
-    <button class="upload-control cancel">
-      <a href="#" type="reset" class="icon icon-discard" style="position:relative;top:-2px"></a>
-    </button>
-    <span class="progress-extended" style="display:inline">
-    </span>
-  </span>
+  <span id="add_cpb_img"></span>
+
   <table role="presentation">
     <thead>
-      <tr class="fade">
-        <td colspan="5"></td>
-        <td><button class="upload-control delete"><a href="#" type="reset" class="icon icon-del"></a></button><input type="checkbox" class="toggle" style="margin-left:8px"></td>
+      <tr>
+        <td colspan="5">
+          <span class="fileupload-progress fade">
+            <span class="meter large blue animate" style="display:inline-block">
+              <span class="bar" style="width:0%"><span></span></span>
+            </span>
+            <button class="upload-control cancel">
+              <a href="#" type="reset" class="icon icon-discard" style="position:relative;top:-2px"></a>
+            </button>
+            <span class="progress-extended" style="display:inline">
+            </span>
+          </span>
+        </td>
+        <td id="check_and_delete_all" class="fade">
+          <button class="upload-control delete"><a href="#" type="reset" class="icon icon-del"></a></button>
+          <input type="checkbox" class="toggle" style="margin-left:8px">
+        </td>
         <td></td>
       </tr>
     </thead>
@@ -34,6 +40,6 @@
   </table>
 </div>
 
-<%= render 'shared/template_upload' %>
-<%= render 'shared/template_download' %>
-<%= render 'shared/javascript_includes' %>
+<%= render 'redmine_jquery_file_upload/template_upload' %>
+<%= render 'redmine_jquery_file_upload/template_download' %>
+<%= render 'redmine_jquery_file_upload/javascript_includes' %>

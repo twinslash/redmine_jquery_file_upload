@@ -66,7 +66,7 @@ $(function () {
     // countUploaded stores number of actually uploaded files without deleted
     var countUploads = 0, countUploaded = 0;
 
-    //this function used instead _renderDownload function jQueryFileUpploadPlugin
+    // this function used instead _renderDownload function jQueryFileUpploadPlugin
     function renderDownload(node, file) {
         var subnode;
         node.attr('class', 'template-download fade');
@@ -102,7 +102,36 @@ $(function () {
         xhrFields: {
             withCredentials: true
         },
-        //this function replace native jQueryFileUpload done function to prevent render downloadTemplate
+
+        // this function replace native jQueryFileUpload add function to prevent paste from clipboard when paste dialog from ClipboardImagePaste plugin is opened
+        add: function (e, data) {
+            if (e.originalEvent && e.originalEvent.type == "paste" && window.cbpDialogOpened) return;
+            var that = $(this).data('fileupload'),
+                options = that.options,
+                files = data.files;
+            $(this).fileupload('process', data).done(function () {
+                that._adjustMaxNumberOfFiles(-files.length);
+                data.isAdjusted = true;
+                data.files.valid = data.isValidated = that._validate(files);
+                data.context = that._renderUpload(files).data('data', data);
+                options.filesContainer[
+                    options.prependFiles ? 'prepend' : 'append'
+                ](data.context);
+                that._renderPreviews(files, data.context);
+                that._forceReflow(data.context);
+                that._transition(data.context).done(
+                    function () {
+                        if ((that._trigger('added', e, data) !== false) &&
+                                (options.autoUpload || data.autoUpload) &&
+                                data.autoUpload !== false && data.isValidated) {
+                            data.submit();
+                        }
+                    }
+                );
+            });
+        },
+
+        // this function replace native jQueryFileUpload done function to prevent render downloadTemplate
         done: function (e, data) {
             var that = $(this).data('fileupload'),
                 template,
@@ -140,7 +169,8 @@ $(function () {
                 );
             }
         },
-        //this function replace native jQueryFileUpload fail function to prevent render downloadTemplate
+
+        // this function replace native jQueryFileUpload fail function to prevent render downloadTemplate
         fail: function (e, data) {
             var that = $(this).data('fileupload'),
                 template;
@@ -192,6 +222,7 @@ $(function () {
     });
 
     $('#attachments_fields').bind('fileuploadadd', function (e, data) {
+        if (e.originalEvent && e.originalEvent.type == "paste" && window.cbpDialogOpened) return;
         $.each(data.files, function(index, file) {
             file.tempFileOrder = ++tempFilesCount;
         });
@@ -203,12 +234,12 @@ $(function () {
             countUploads--;
         });
        if(!countUploads) {  data.form.find('input:submit').removeAttr('disabled'); }
-       data.form.find('table thead tr').addClass('in');
+       data.form.find('table thead tr td#check_and_delete_all').addClass('in');
     });
 
     $('#attachments_fields').bind('fileuploaddestroyed', function (e, data) {
             countUploaded--;
-            if(!countUploaded) { $(e.currentTarget).parents('form').find('table thead tr').removeClass('in'); }
+            if(!countUploaded) { $(e.currentTarget).parents('form').find('table thead tr td#check_and_delete_all').removeClass('in'); }
     });
 
     $('#attachments_fields').bind('fileuploadfailed', function (e, data) {

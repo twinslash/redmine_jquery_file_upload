@@ -6,7 +6,7 @@ class JqueryFilesController < ApplicationController
   end
 
   def new
-    render file: File.join(Rails.root, 'plugins', 'redmine_jquery_file_upload', 'app', 'views', 'shared', 'attachments_form'), layout: false
+    render file: File.join(Rails.root, 'plugins', 'redmine_jquery_file_upload', 'app', 'views', 'redmine_jquery_file_upload', 'attachments_form'), layout: false
   end
 
   def create
