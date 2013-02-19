@@ -64,7 +64,8 @@ $(function () {
 
     // countUploads holds number of files that added but not yet uploaded;
     // countUploaded stores number of actually uploaded files without deleted
-    var countUploads = 0, countUploaded = 0;
+    // countFromClipboard stores count of files, added from clipboard
+    var countUploads = 0, countUploaded = 0, countFromClipboard = 0;
 
     // this function used instead _renderDownload function jQueryFileUpploadPlugin
     function renderDownload(node, file) {
@@ -105,6 +106,7 @@ $(function () {
 
         // this function replace native jQueryFileUpload add function to prevent paste from clipboard when paste dialog from ClipboardImagePaste plugin is opened
         add: function (e, data) {
+            // ignore paste event if paste from clipboard dialog opened
             if (e.originalEvent && e.originalEvent.type == "paste" && window.cbpDialogOpened) return;
             var that = $(this).data('fileupload'),
                 options = that.options,
@@ -222,9 +224,48 @@ $(function () {
     });
 
     $('#attachments_fields').bind('fileuploadadd', function (e, data) {
+        var fromClipboard;
+        // ignore paste event if paste from clipboard dialog opened
         if (e.originalEvent && e.originalEvent.type == "paste" && window.cbpDialogOpened) return;
+        // mark all files from clipboard
+        if (e.originalEvent && e.originalEvent.type == "paste") { fromClipboard = true; }
         $.each(data.files, function(index, file) {
             file.tempFileOrder = ++tempFilesCount;
+            if (fromClipboard || file.fromClipboard) {
+                countFromClipboard++;
+                file.fromClipboard = true;
+                // generate "unique" identifier, using "random" part cbImagePaste.cbp_act_update_id
+                var attachId    = cbImagePaste.cbp_act_update_id + "-" + countFromClipboard;
+                file.uniqueName = "screenshot" + attachId + ".png";
+                file.onInputNameBlur = function() {
+                    this.value = this.value.replace(/^\s+|\s+$/g, '');
+                    if (this.value == '')
+                        this.value = this.defaultValue;
+                    else if (this.value.search(/\.png$/) < 1)
+                        this.value += ".png";
+                    this.value = this.value.replace(/[\/\\!%\?\*:'"\|<>&]/g, "-");
+                    this.value = this.value.replace(/ /g, "_");
+                }
+
+                //----------------------------------------------------------------------------
+                // Show copy wiki link dialog.
+                file.onButtonLinkClick = function (el) {
+                    var name = $(this).prev().val();
+                    $("#cbp_image_link").val("!" + name + "!");
+                    $("#cbp_thumbnail_link").val("{{thumbnail(" + name + ")}}");
+
+                    $("#cbp_link_dlg").dialog({
+                        closeOnEscape: true,
+                        modal: true,
+                        resizable: false,
+                        dialogClass: "cbp_drop_shadow cbp_dlg_small",
+                        position: { my: "left top", at: "left bottom", of: $(this) },
+                        minHeight: 0,
+                        width: "auto"
+                    });
+                    return false;
+                }
+            }
         });
     });
 

@@ -4,7 +4,7 @@
     <tr class="template-upload fade">
         <td class="preview"><span class="fade"></span></td>
         <td class="name">
-            {% if (file.cpbImage) { %}
+            {% if (file.fromClipboard) { %}
                 <input type="text" size="30" maxlength="50" value="{%=file.uniqueName%}" onblur="({%=file.onInputNameBlur%}).call(this)" name="attachments[{%=file.tempFileOrder%}][name]">
                 <a href="#" onclick="({%=file.onButtonLinkClick%}).call(this)"><img src="/images/link.png"></a>
             {% } else { %}

@@ -78,10 +78,10 @@
       close: function(event, ui) {
         deinitDialog();
         delete dialog;
+        window.cbpDialogOpened = false;
       },
       resize: function(event, ui) {
         resizePanel();
-        window.cbpDialogOpened = false;
       }
     });
   };
@@ -381,9 +381,6 @@
   // see attachment_patch.rb
   var imageAttachIdOfs = 10000;
 
-  // image field counter
-  var imageAttachCount = 0;
-
   //----------------------------------------------------------------------------
   // Insert attachment input tag into document.
   function insertAttachment() {
@@ -399,45 +396,9 @@
       return;
     }
 
-    // inspired by redmine/public/javascripts/application.js
-    imageAttachCount++;
-
-    // generate "unique" identifier, using "random" part cbImagePaste.cbp_act_update_id
-    var attachId    = cbImagePaste.cbp_act_update_id + "-" + imageAttachCount;
-
     var file = dataURLtoBlob(dataUrl);
-    file.cpbImage = true;
-    file.uniqueName = "picture" + attachId + ".png";
-
-    file.onInputBlur = function() {
-      this.value = this.value.replace(/^\s+|\s+$/g, '');
-      if (this.value == '')
-          this.value = this.defaultValue;
-      else if (this.value.search(/\.png$/) < 1)
-           this.value += ".png";
-      this.value = this.value.replace(/[\/\\!%\?\*:'"\|<>&]/g, "-");
-      this.value = this.value.replace(/ /g, "_");
-    }
-
-    //----------------------------------------------------------------------------
-    // Show copy wiki link dialog.
-    file.onButtonLinkClick = function (el) {
-      var name = $(this).prev().val();
-      $("#cbp_image_link").val("!" + name + "!");
-      $("#cbp_thumbnail_link").val("{{thumbnail(" + name + ")}}");
-
-      $("#cbp_link_dlg").dialog({
-        closeOnEscape: true,
-        modal: true,
-        resizable: false,
-        dialogClass: "cbp_drop_shadow cbp_dlg_small",
-        position: { my: "left top", at: "left bottom", of: $(this) },
-        minHeight: 0,
-        width: "auto"
-      });
-      return false;
-    }
-
+    file.fromClipboard = true;
+    // manually call method add from jQueryFileUpload plugin
     window.$('#attachments_fields').fileupload('add', { files: [file] });
 
     $(dialog).dialog("close");
