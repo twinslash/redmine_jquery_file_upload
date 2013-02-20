@@ -352,7 +352,7 @@
         // If the user pastes an image, the src attribute
         // will represent the image as a base64 encoded string.
         if (child.tagName === "IMG") {
-          rawPastedImage = dataURLtoBlob(child.src);
+          rawPastedImage = child.src.indexOf(';base64,') >= 0 ? dataURLtoBlob(child.src) : child.src;
           createImage(child.src);
         } else {
           alert(cbImagePaste.cbp_txt_no_image_cb);

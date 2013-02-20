@@ -1,5 +1,6 @@
 class JqueryFilesController < ApplicationController
   require 'RMagick'
+  require 'open-uri'
 
   unloadable
 
@@ -43,13 +44,15 @@ class JqueryFilesController < ApplicationController
   end
 
   def crop
-    if params[:image]
+    if params[:image].is_a? String
+      orig_img = Magick::ImageList.new(params[:image])
+    elsif params[:image].is_a? ActionDispatch::Http::UploadedFile
       orig_img = Magick::ImageList.new(params[:image].tempfile.path)
-      orig_img.crop!(*params[:crop_area].split(',').map(&:to_i))
-
-      send_data orig_img.to_blob, type: params[:image].content_type, disposition: 'inline'
     else
       render nothing: true
+      return
     end
+    orig_img.crop!(*params[:crop_area].split(',').map(&:to_i))
+    send_data orig_img.to_blob, type: orig_img.first.mime_type, disposition: 'inline'
   end
 end
