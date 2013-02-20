@@ -18,6 +18,9 @@
   // pasted image
   var pastedImage;
 
+  // raw pasted Image
+  var rawPastedImage
+
   // dialog object
   var dialog;
 
@@ -44,12 +47,6 @@
         ($.browser.webkit && typeof window.chrome === "object" && browserMajor >= cbImagePaste.cbp_min_chrome_ver)
        )) {
       alert(cbImagePaste.cbp_txt_wrong_browser);
-      return false;
-    }
-
-    var fields = checkAttachFields();
-    if (!fields) {
-      alert(cbImagePaste.cbp_txt_too_many_files);
       return false;
     }
 
@@ -320,11 +317,11 @@
         for (var i = 0; i < items.length; i++) {
           if (items[i].type.indexOf("image") !== -1) {
             // We need to represent the image as a file,
-            var blob = items[i].getAsFile();
+            rawPastedImage = items[i].getAsFile();
             // and use a URL or webkitURL (whichever is available to the browser)
             // to create a temporary URL to the object
             var URLObj = window.URL || window.webkitURL;
-            var source = URLObj.createObjectURL(blob);
+            var source = URLObj.createObjectURL(rawPastedImage);
 
             // The URL can then be used as the source of an image
             createImage(source);
@@ -384,51 +381,41 @@
   //----------------------------------------------------------------------------
   // Insert attachment input tag into document.
   function insertAttachment() {
- if (!pastedImage) {
+    if (!pastedImage) {
       alert(cbImagePaste.cbp_txt_no_image_pst);
       return;
     }
 
-    var dataUrl = getImageUrl();
+    var xhr = new XMLHttpRequest(), formData = new FormData(), cropArea = [];
+    // set the cropped area into dimensions object
+    cropArea.push(Math.round(cropCoords.x));
+    cropArea.push(Math.round(cropCoords.y));
+    cropArea.push(Math.round(cropCoords.w));
+    cropArea.push(Math.round(cropCoords.h));
 
-    if (dataUrl.length > cbImagePaste.cbp_max_attach_size) {
-      alert(cbImagePaste.cbp_txt_too_big_image);
-      return;
-    }
+    // send to the server image with crop area
+    formData.append('image', rawPastedImage);
+    formData.append('crop_area', cropArea);
+    xhr.open('POST', '/jquery_files/crop', true);
+    // this is need to verify CSRF token authenticity
+    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    // we expect blob object into response
+    xhr.responseType = 'blob';
+    xhr.onload = function(e) {
+      file = this.response;
+      if (file.length > cbImagePaste.cbp_max_attach_size) {
+        alert(cbImagePaste.cbp_txt_too_big_image);
+        return;
+      }
+      file.fromClipboard = true;
+      // manually call method add from jQueryFileUpload plugin
+      window.$('#attachments_fields').fileupload('add', { files: [file] });
 
-    var file = dataURLtoBlob(dataUrl);
-    file.fromClipboard = true;
-    // manually call method add from jQueryFileUpload plugin
-    window.$('#attachments_fields').fileupload('add', { files: [file] });
+      $(dialog).dialog("close");
+    };
+    xhr.send(formData);
 
-    $(dialog).dialog("close");
-  };
-
-  //----------------------------------------------------------------------------
-  // Create final image url.
-  function getImageUrl() {
-    // create temporary canvas
-    var dst = document.createElement("canvas");
-    dst.width  = Math.round(cropCoords.w);
-    dst.height = Math.round(cropCoords.h);
-    var ctx = dst.getContext("2d");
-    // draw image
-    ctx.drawImage(pastedImage,
-      Math.round(cropCoords.x), Math.round(cropCoords.y), dst.width, dst.height,
-      0, 0, dst.width, dst.height);
-
-    return dst.toDataURL("image/png");
-  };
-
-  //----------------------------------------------------------------------------
-  // Check maximum number of attachment fields, return fields element.
-  function checkAttachFields() {
-    var fileFields  = $("#attachments_fields");
-    var imageFields = $("#cbp_image_fields");
-    if (!fileFields || !imageFields ||
-      (fileFields.children().length + imageFields.children().length) >= cbImagePaste.cbp_max_attachments)
-      return;
-    return imageFields;
+    return true;
   };
 
   //----------------------------------------------------------------------------

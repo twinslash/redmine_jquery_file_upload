@@ -1,4 +1,6 @@
 class JqueryFilesController < ApplicationController
+  require 'RMagick'
+
   unloadable
 
   def index
@@ -38,5 +40,16 @@ class JqueryFilesController < ApplicationController
 
   def destroy_tempfolder
     RedmineJqueryFileUpload::JqueryFilesManager.new(params[:id]).delete_folder
+  end
+
+  def crop
+    if params[:image]
+      orig_img = Magick::ImageList.new(params[:image].tempfile.path)
+      orig_img.crop!(*params[:crop_area].split(',').map(&:to_i))
+
+      send_data orig_img.to_blob, type: params[:image].content_type, disposition: 'inline'
+    else
+      render nothing: true
+    end
   end
 end
