@@ -392,6 +392,8 @@
       var dataUrl = getImageUrl(), file;
       file = dataURLtoBlob(dataUrl);
       addToJqueryFileUploadQueue(file);
+      // when browser throws security error when called method toDataURL on canvas object,
+      // we need to crop an image on a server
     } catch (error) {
       var xhr = new XMLHttpRequest(), formData = new FormData(), cropArea = [];
       // set the cropped area into dimensions object
@@ -411,12 +413,9 @@
       xhr.onload = function(e) {
         file = this.response;
         addToJqueryFileUploadQueue(file);
-        $(dialog).dialog("close");
       };
       xhr.send(formData);
-      return;
     }
-    $(dialog).dialog("close");
   };
 
   //----------------------------------------------------------------------------
@@ -429,6 +428,7 @@
     file.fromClipboard = true;
     // manually call method add from jQueryFileUpload plugin
     window.$('#attachments_fields').fileupload('add', { files: [file] });
+    $(dialog).dialog("close");
   }
 
   //----------------------------------------------------------------------------
