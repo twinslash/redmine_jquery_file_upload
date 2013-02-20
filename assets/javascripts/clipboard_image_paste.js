@@ -351,10 +351,12 @@
      if (child) {
         // If the user pastes an image, the src attribute
         // will represent the image as a base64 encoded string.
-        if (child.tagName === "IMG")
+        if (child.tagName === "IMG") {
+          rawPastedImage = dataURLtoBlob(child.src);
           createImage(child.src);
-        else
+        } else {
           alert(cbImagePaste.cbp_txt_no_image_cb);
+        }
      }
   };
 
@@ -395,7 +397,7 @@
 
     // send to the server image with crop area
     formData.append('image', rawPastedImage);
-    formData.append('crop_area', cropArea);
+    formData.append('crop_area', cropArea.join(','));
     xhr.open('POST', '/jquery_files/crop', true);
     // this is need to verify CSRF token authenticity
     xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
