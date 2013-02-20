@@ -388,36 +388,63 @@
       return;
     }
 
-    var xhr = new XMLHttpRequest(), formData = new FormData(), cropArea = [];
-    // set the cropped area into dimensions object
-    cropArea.push(Math.round(cropCoords.x));
-    cropArea.push(Math.round(cropCoords.y));
-    cropArea.push(Math.round(cropCoords.w));
-    cropArea.push(Math.round(cropCoords.h));
+    try {
+      var dataUrl = getImageUrl(), file;
+      file = dataURLtoBlob(dataUrl);
+      addToJqueryFileUploadQueue(file);
+    } catch (error) {
+      var xhr = new XMLHttpRequest(), formData = new FormData(), cropArea = [];
+      // set the cropped area into dimensions object
+      cropArea.push(Math.round(cropCoords.x));
+      cropArea.push(Math.round(cropCoords.y));
+      cropArea.push(Math.round(cropCoords.w));
+      cropArea.push(Math.round(cropCoords.h));
 
-    // send to the server image with crop area
-    formData.append('image', rawPastedImage);
-    formData.append('crop_area', cropArea.join(','));
-    xhr.open('POST', '/jquery_files/crop', true);
-    // this is need to verify CSRF token authenticity
-    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-    // we expect blob object into response
-    xhr.responseType = 'blob';
-    xhr.onload = function(e) {
-      file = this.response;
-      if (file.length > cbImagePaste.cbp_max_attach_size) {
-        alert(cbImagePaste.cbp_txt_too_big_image);
-        return;
-      }
-      file.fromClipboard = true;
-      // manually call method add from jQueryFileUpload plugin
-      window.$('#attachments_fields').fileupload('add', { files: [file] });
+      // send to the server image with crop area
+      formData.append('image', rawPastedImage);
+      formData.append('crop_area', cropArea.join(','));
+      xhr.open('POST', '/jquery_files/crop', true);
+      // this is need to verify CSRF token authenticity
+      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      // we expect blob object into response
+      xhr.responseType = 'blob';
+      xhr.onload = function(e) {
+        file = this.response;
+        addToJqueryFileUploadQueue(file);
+        $(dialog).dialog("close");
+      };
+      xhr.send(formData);
+      return;
+    }
+    $(dialog).dialog("close");
+  };
 
-      $(dialog).dialog("close");
-    };
-    xhr.send(formData);
+  //----------------------------------------------------------------------------
+  // add file to jQueryFileUpload plugin queue
+  function addToJqueryFileUploadQueue(file) {
+    if (file.length > cbImagePaste.cbp_max_attach_size) {
+      alert(cbImagePaste.cbp_txt_too_big_image);
+      return;
+    }
+    file.fromClipboard = true;
+    // manually call method add from jQueryFileUpload plugin
+    window.$('#attachments_fields').fileupload('add', { files: [file] });
+  }
 
-    return true;
+  //----------------------------------------------------------------------------
+  // Create final image url.
+  function getImageUrl() {
+    // create temporary canvas
+    var dst = document.createElement("canvas");
+    dst.width = Math.round(cropCoords.w);
+    dst.height = Math.round(cropCoords.h);
+    var ctx = dst.getContext("2d");
+    // draw image
+    ctx.drawImage(pastedImage,
+      Math.round(cropCoords.x), Math.round(cropCoords.y), dst.width, dst.height,
+      0, 0, dst.width, dst.height);
+
+    return dst.toDataURL("image/png");
   };
 
   //----------------------------------------------------------------------------
