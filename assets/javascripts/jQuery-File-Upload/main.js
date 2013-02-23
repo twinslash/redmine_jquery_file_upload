@@ -300,7 +300,7 @@ $(function () {
 
     $('#attachments_fields').bind('fileuploadfailed', function (e, data) {
         $.each(data.files,  function (index, file) {
-            if(!file.error) { updateCountUploads(-data.files.length); }
+            if(!file.error) { updateCountUploads(-1); }
         });
     });
 
