@@ -14,7 +14,7 @@
         <td class="size" align="center"><span>({%=o.formatFileSize(file.size)%})</span></td>
         <td><span><%= text_field_tag 'attachments[{%=file.tempFileOrder%}][description]', '', :id => nil, :class => 'description', :maxlength => 255, :placeholder => l(:label_optional_description) %></span></td>
         {% if (file.error) { %}
-            <td class="error-upload"><span><%= l('error_upload') %>{%=file.error%}</span></td>
+            <td class="error-upload"><span><%= l('error_upload') %>{%=redmineJqueryFileUpload.locale.errors[file.error]%}</span></td>
         {% } else if (o.files.valid && !i) { %}
             <td class="start">{% if (!o.options.autoUpload) { %}
                 <button class="upload-control">
@@ -30,9 +30,11 @@
             </button>
         {% } %}</td>
         <td>
-            <div class="meter small blue nostripes" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                <span class="bar" style="width:0%;"></span>
-            </div>
+            {% if(!file.error) { %}
+                <div class="meter small blue nostripes" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <span class="bar" style="width:0%;"></span>
+                </div>
+            {% } %}
         </td>
     </tr>
 {% } %}

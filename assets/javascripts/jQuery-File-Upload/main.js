@@ -67,6 +67,26 @@ $(function () {
     // countFromClipboard stores count of files, added from clipboard
     var countUploads = 0, countUploaded = 0, countFromClipboard = 0;
 
+    // this function disables submit button if present any upload
+    function updateCountUploads(diff) {
+        countUploads += diff;
+        if(countUploads > 0) {
+            $('#attachments_fields').parents('form').find('input:submit').attr('disabled', 'disabled');
+        } else {
+            $('#attachments_fields').parents('form').find('input:submit').removeAttr('disabled');
+        }
+    }
+
+    // shows checkbox to check all uploaded and button to delete all checked, if exists any uploaded file
+    function updateCountUploaded(diff) {
+        countUploaded += diff;
+        if(countUploaded > 0) {
+            $('#attachments_fields').find('table thead tr td#check_and_delete_all').addClass('in');
+        } else {
+            $('#attachments_fields').find('table thead tr td#check_and_delete_all').removeClass('in');
+        }
+    }
+
     // this function used instead _renderDownload function jQueryFileUpploadPlugin
     function renderDownload(node, file) {
         var subnode;
@@ -270,32 +290,25 @@ $(function () {
     });
 
     $('#attachments_fields').bind('fileuploadcompleted', function (e, data) {
-       $.each(data.files, function(index, file) {
-            countUploaded++;
-            countUploads--;
-        });
-       if(!countUploads) {  data.form.find('input:submit').removeAttr('disabled'); }
-       data.form.find('table thead tr td#check_and_delete_all').addClass('in');
+       updateCountUploaded(data.files.length);
+       updateCountUploads(-data.files.length);
     });
 
     $('#attachments_fields').bind('fileuploaddestroyed', function (e, data) {
-            countUploaded--;
-            if(!countUploaded) { $(e.currentTarget).parents('form').find('table thead tr td#check_and_delete_all').removeClass('in'); }
+        updateCountUploaded(-1);
     });
 
     $('#attachments_fields').bind('fileuploadfailed', function (e, data) {
-           $.each(data.files, function(index, file) {
-              countUploads--;
-           });
-           if(!countUploads) {  data.form.find('input:submit').removeAttr('disabled'); }
+        $.each(data.files,  function (index, file) {
+            if(!file.error) { updateCountUploads(-data.files.length); }
+        });
     });
 
     $('#attachments_fields').bind('fileuploadsubmit', function(e, data) {
         var old_url = $('#attachments_fields').fileupload('option', 'url');
-        countUploads++;
-        $('#attachments_fields').parents('form').find('input:submit').attr('disabled', 'disabled');
+        updateCountUploads(data.files.length);
         $('#attachments_fields').fileupload('option', { url: (function() {
-                var regexp = /(tempFileOrder\[\]=[\d]*&)*tempFileOrder\[\]=[\d]*/;
+                var regexp = /(tempFileOrder\[\]=[\d]+&)*tempFileOrder\[\]=[\d]+/;
                 var tempFileOrder = data.files.map(function (file) { return 'tempFileOrder[]=' + file.tempFileOrder; }).join('&');
                 if( old_url.match(regexp) ) {
                     return old_url.replace(regexp, tempFileOrder);
@@ -318,9 +331,8 @@ $(function () {
     );
 
     $('#attachments_fields').fileupload('option', {
-        // url: '//jquery-file-upload.appspot.com/',
-        // maxFileSize: 5000000,
-        // acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        // defined in app/views/redmine_jquery_file_upload/_javascript_definitions.html.erb
+        maxFileSize: redmineJqueryFileUpload.maxFileSize,
         process: [
             // {
             //     action: 'load',

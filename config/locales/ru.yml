@@ -6,6 +6,10 @@ ru:
   cancel_upload: Отменить загрузки
   delete_all: Удалить все
 
+  error_jqery_file_too_big: Превышен размер файла
+  error_jquery_empty_result: Отсутствует результат загрузки
+  error_jquery_ploaded_bytes_too_big: Количество загруженных байтов превысило размер файла
+
   cbp_txt_add_image      : 'Добавить изображение из буфера обмена'
   cbp_txt_crop_box       : 'область кадрирования:  x={1}  y={2}  ширина={3}  высота={4}'
   cbp_txt_print          : 'Используйте клавишу PrintScreen, а затем комбинацию Ctrl+V.'

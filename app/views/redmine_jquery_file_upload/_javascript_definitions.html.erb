@@ -1,0 +1,13 @@
+<script type="text/javascript">
+  redmineJqueryFileUpload = window.redmineJqueryFileUpload || {};
+  redmineJqueryFileUpload = {
+    maxFileSize: "<%= Setting.attachment_max_size.to_i.kilobytes %>",
+    locale: {
+      errors: {
+        "maxFileSize": "<%= escape_javascript(l('error_jqery_file_too_big')) %>",
+        "uploadedBytes": "<%= escape_javascript(l('error_ploaded_bytes_exceed_file_size')) %>",
+        "emptyResult": "<%= escape_javascript(l('error_jquery_empty_result')) %>"
+      }
+    }
+  };
+</script>

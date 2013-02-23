@@ -6,6 +6,10 @@ en:
   cancel_upload: Cancel upload
   delete_all: Delete all
 
+  error_jqery_file_too_big: File size limit exceeded
+  error_jquery_empty_result: Empty file upload result
+  error_jquery_ploaded_bytes_too_big: Uploaded bytes exceeded file size limit
+
   cbp_txt_add_image      : 'Add picture from clipboard'
   cbp_txt_crop_box       : 'crop box:  x={1}  y={2}  width={3}  height={4}'
   cbp_txt_print          : 'Use PrintScreen key and then Ctrl+V.'

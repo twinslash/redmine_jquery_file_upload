@@ -7,7 +7,7 @@
             <td class="name"><span>{%=file.name.truncate()%}</span></td>
             <td class="size" align="center"><span>({%=o.formatFileSize(file.size)%})</span></td>
             <td><span><%= text_field_tag 'attachments[{%=file.tempFileOrder%}][description]', '', :id => nil, :class => 'description', :maxlength => 255, :placeholder => l(:label_optional_description) %></span></td>
-            <td class="error-upload"><span><%= l('error_upload') %>{%=file.error%}</span></td>
+            <td class="error-upload"><span><%= l('error_upload') %>{%=redmineJqueryFileUpload.locale.errors[file.error]%}</span></td>
         {% } else { %}
             <td class="preview">{% if (file.thumbnail_url) { %}
                 <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
