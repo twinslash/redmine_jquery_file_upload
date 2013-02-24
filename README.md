@@ -15,14 +15,14 @@ Restart server.
 
 ## Features
 
-* Multiple files upload simultaneously.
-* Upload files by drag&drop from desktop or file manager window.
+* Upload multiple files at once.
+* Upload files by drag and drop from the desktop or file manager window.
 * Upload image from clipboard by pressing Ctrl + V.
-* Make croping clipboard image and add it to uploads.
+* Make cropping clipboard image and put it to uploads.
 
 ## Uninstall
 
-Remove /redmine_books directory from /plugins directory
+Remove /redmine_jquery_file_upload directory from /plugins directory
 ```console
 cd redmine_application_path/plugins
 rm -rf redmine_jquery_file_upload
@@ -32,5 +32,5 @@ Restart server.
 
 ## Dependencies
 
-* This plugin successfully integrated with [clipboard_image_paste](https://github.com/peclik/clipboard_image_paste) Redmine plugin. Thanks [Richard Pecl](https://github.com/peclik) for the commented plugins code.
-* Used  (jQueryFileUpload)[https://github.com/blueimp/jQuery-File-Upload] plugin.
+* This plugin successfully integrated with [clipboard_image_paste](https://github.com/peclik/clipboard_image_paste) Redmine plugin. Thanks to [Richard Pecl](https://github.com/peclik) for the commented code plugin.
+* Used  (jQueryFileUpload)[https://github.com/blueimp/jQuery-File-Upload] javascript plugin.
