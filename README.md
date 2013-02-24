@@ -18,7 +18,11 @@ Restart server.
 * Upload multiple files at once.
 * Upload files by drag and drop from the desktop or file manager window.
 * Upload image from clipboard by pressing Ctrl + V.
+* File upload progress.
+* Common process info and progress.
+![](http://farm9.staticflickr.com/8365/8502375713_b1e53ae0b1_c.jpg)
 * Make cropping clipboard image and put it to uploads.
+![](http://farm9.staticflickr.com/8521/8503481966_d542f08765_c.jpg)
 
 ## Uninstall
 
@@ -33,4 +37,4 @@ Restart server.
 ## Dependencies
 
 * This plugin successfully integrated with [clipboard_image_paste](https://github.com/peclik/clipboard_image_paste) Redmine plugin. Thanks to [Richard Pecl](https://github.com/peclik) for the commented code plugin.
-* Used  (jQueryFileUpload)[https://github.com/blueimp/jQuery-File-Upload] javascript plugin.
+* Used  [jQueryFileUpload](https://github.com/blueimp/jQuery-File-Upload) javascript plugin.
