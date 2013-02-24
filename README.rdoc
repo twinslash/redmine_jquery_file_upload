@@ -1,3 +1,0 @@
-= redmine_advanced_attachments
-
-Description goes here
