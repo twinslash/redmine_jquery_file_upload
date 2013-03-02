@@ -62,6 +62,7 @@ module RedmineJqueryFileUpload
       if folder.present?
         folderPath = File.join(RedmineJqueryFileUpload.tmpdir, folder)
         FileUtils.rm_rf folderPath if Dir.exist?(folderPath)
+        @folder_created = false
         return true
       end
       return false
