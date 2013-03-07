@@ -39,7 +39,7 @@ module RedmineJqueryFileUpload
       end
 
       def delete_tempfolder
-        FileUtils.rm_rf @temp_folder if Dir.exist?(@temp_folder)
+        FileUtils.rm_rf @temp_folder if @temp_folder && Dir.exist?(@temp_folder)
       end
 
     end
