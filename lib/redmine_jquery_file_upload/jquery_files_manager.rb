@@ -36,9 +36,9 @@ module RedmineJqueryFileUpload
       mkfolder unless @folder_created
       if @folder_created && (order = self.class.sanitize_filename(order)).present?
         File.open(File.join(RedmineJqueryFileUpload.tmpdir, @folder, "#{order}.metadata"), 'w') do |f|
-          metadata = { filename: file.original_filename,
-                       type: file.content_type,
-                       head: file.headers }
+          metadata = { :filename => file.original_filename,
+                       :type => file.content_type,
+                       :head => file.headers }
           f.write(metadata.to_json)
         end
         return true
@@ -69,13 +69,13 @@ module RedmineJqueryFileUpload
     end
 
     def to_responce(file, order)
-      { url: File.join(RedmineJqueryFileUpload.tmpdir, @folder, order),
-        name: file.original_filename,
-        size: file.tempfile.size,
-        delete_url: "/jquery_files/#{order}?tempFolderName=#{@folder}",
-        delete_type: 'DELETE',
-        delete_with_credentials: true,
-        tempFileOrder: order }
+      { :url => File.join(RedmineJqueryFileUpload.tmpdir, @folder, order),
+        :name => file.original_filename,
+        :size => file.tempfile.size,
+        :delete_url => "/jquery_files/#{order}?tempFolderName=#{@folder}",
+        :delete_type => 'DELETE',
+        :delete_with_credentials => true,
+        :tempFileOrder => order }
     end
 
     def self.sanitize_filename(filename)

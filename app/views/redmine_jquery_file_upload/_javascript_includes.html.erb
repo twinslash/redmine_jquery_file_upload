@@ -6,7 +6,7 @@
 -->
 
 <% %w{ tmpl.min.js load-image.min.js canvas-to-blob.min.js }.each do |js_plugin| %>
-  <%= javascript_include_tag js_plugin, plugin: 'redmine_jquery_file_upload' %>
+  <%= javascript_include_tag js_plugin, :plugin => 'redmine_jquery_file_upload' %>
 <% end %>
 
 <!--
@@ -19,7 +19,7 @@
 -->
 
 <% %w{ jquery.ui.widget.js jquery.iframe-transport.js jquery.fileupload.js jquery.fileupload-fp.js jquery.fileupload-ui.js main.js }.each do |js_file| %>
-  <%= javascript_include_tag "jQuery-File-Upload/#{ js_file }", plugin: 'redmine_jquery_file_upload' %>
+  <%= javascript_include_tag "jQuery-File-Upload/#{ js_file }", :plugin => 'redmine_jquery_file_upload' %>
 <% end %>
 
 <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->

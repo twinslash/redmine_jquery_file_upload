@@ -7,7 +7,7 @@ Redmine::Plugin.register :redmine_jquery_file_upload do
   version '0.0.1'
   url 'https://github.com/twinslash/redmine_jquery_file_upload'
   author_url 'https://github.com/twinslash'
-  settings default: { tmpdir: 'tmp/jquery_files' }
+  settings :default => { :tmpdir => 'tmp/jquery_files' }
 
   # clipboard image paste plugin global variables
   configfile = File.join(File.dirname(__FILE__), 'config', 'settings.yml')

@@ -9,7 +9,7 @@ class JqueryFilesController < ApplicationController
   end
 
   def new
-    render file: File.join(Rails.root, 'plugins', 'redmine_jquery_file_upload', 'app', 'views', 'redmine_jquery_file_upload', 'attachments_form'), layout: false
+    render :file => File.join(Rails.root, 'plugins', 'redmine_jquery_file_upload', 'app', 'views', 'redmine_jquery_file_upload', 'attachments_form'), :layout => false
   end
 
   def create
@@ -26,11 +26,11 @@ class JqueryFilesController < ApplicationController
     respond_to do |format|
       # html response is for browsers using iframe sollution
       format.html {
-        render json: response.to_json,
-        content_type: 'text/html',
-        layout: false
+        render :json => response.to_json,
+               :content_type => 'text/html',
+               :layout => false
       }
-      format.json { render json: response.to_json }
+      format.json { render :json => response.to_json }
     end
   end
 
@@ -49,10 +49,10 @@ class JqueryFilesController < ApplicationController
     elsif params[:image].is_a? ActionDispatch::Http::UploadedFile
       orig_img = Magick::ImageList.new(params[:image].tempfile.path)
     else
-      render nothing: true
+      render :nothing => true
       return
     end
     orig_img.crop!(*params[:crop_area].split(',').map(&:to_i))
-    send_data orig_img.to_blob, type: orig_img.first.mime_type, disposition: 'inline'
+    send_data orig_img.to_blob, :type => orig_img.first.mime_type, :disposition => 'inline'
   end
 end
