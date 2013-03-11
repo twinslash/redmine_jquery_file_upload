@@ -12,7 +12,7 @@ module RedmineJqueryFileUpload
       folder = self.class.sanitize_filename @folder
       if folder.present?
         path = File.join(RedmineJqueryFileUpload.tmpdir, folder)
-        Dir.mkdir(path) unless Dir.exist?(path)
+        Dir.mkdir(path) unless File.exist?(path)
         @folder_created = true
       end
       return @folder_created
@@ -61,7 +61,7 @@ module RedmineJqueryFileUpload
       folder = self.class.sanitize_filename(@folder)
       if folder.present?
         folderPath = File.join(RedmineJqueryFileUpload.tmpdir, folder)
-        FileUtils.rm_rf folderPath if Dir.exist?(folderPath)
+        FileUtils.rm_rf folderPath if File.exist?(folderPath)
         @folder_created = false
         return true
       end

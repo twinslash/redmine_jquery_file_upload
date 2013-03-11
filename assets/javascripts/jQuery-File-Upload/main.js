@@ -32,7 +32,7 @@ $(function () {
 
     // tempFolderName value used to find folder from which load files after submit
     var tempFolderName = randomKey(40), tempFilesCount = 0;
-    $('div.#content form').append('<input type="text" value="' + tempFolderName + '" name="tempFolderName" style="display:none">');
+    $('div #content form').append('<input type="text" value="' + tempFolderName + '" name="tempFolderName" style="display:none">');
 
     // this flag indicates if the form was submitted before unload
     var isFormSubmitted = false;

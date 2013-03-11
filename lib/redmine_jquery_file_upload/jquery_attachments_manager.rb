@@ -21,7 +21,7 @@ module RedmineJqueryFileUpload
         folder_name = RedmineJqueryFileUpload::JqueryFilesManager.sanitize_filename(params[:tempFolderName])
         return if folder_name.blank?
         @temp_folder = File.join(RedmineJqueryFileUpload.tmpdir, folder_name)
-        return unless Dir.exist?(@temp_folder)
+        return unless File.exist?(@temp_folder)
         file, tempfile = nil
         params[:attachments] && params[:attachments].each do |order, attachment|
           begin
@@ -39,7 +39,7 @@ module RedmineJqueryFileUpload
       end
 
       def delete_tempfolder
-        FileUtils.rm_rf @temp_folder if @temp_folder && Dir.exist?(@temp_folder)
+        FileUtils.rm_rf @temp_folder if @temp_folder && File.exist?(@temp_folder)
       end
 
     end

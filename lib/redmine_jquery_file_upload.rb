@@ -39,6 +39,6 @@ module RedmineJqueryFileUpload
   end
 
   def self.mktmpdir
-    FileUtils.mkdir_p(self.tmpdir) unless Dir.exist?(self.tmpdir)
+    FileUtils.mkdir_p(self.tmpdir) unless File.exist?(self.tmpdir)
   end
 end
