@@ -1,3 +1,8 @@
+if RUBY_VERSION < '1.9.2'
+  require 'json'
+end
+
+
 module RedmineJqueryFileUpload
 
   module JqueryAttachmentsManager
@@ -28,7 +33,26 @@ module RedmineJqueryFileUpload
             tempfile = File.open(File.join(@temp_folder, "#{order}.data"), 'rb')
 
             File.open(File.join(@temp_folder, "#{order}.metadata"), 'rb') do |f|
-              opts = JSON::parse(f.read).symbolize_keys.merge(:tempfile => tempfile)
+              opts = JSON::parse(f.read).symbolize_keys
+              # for compatibility with ruby < 1.9.2 (instance of File does not have method #size)
+              if RUBY_VERSION < "1.9.2"
+                tempfile.instance_eval do
+                  @size ||= opts[:size]
+                  def size; @size end
+                end
+              end
+
+              # add to tempfile some methods of Tempfile instance
+              tempfile.instance_eval do |f|
+                alias :length :size
+                alias :close! :close
+                def delete
+                  File.delete self.path
+                end
+                alias :unlink :delete
+              end
+
+              opts.merge!(:tempfile => tempfile)
               opts[:filename] = attachment[:name] if attachment[:name]
               file = ActionDispatch::Http::UploadedFile.new opts
             end

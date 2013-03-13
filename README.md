@@ -11,6 +11,12 @@ Clone plugin's source code into /plugins application directory
 ```console
 git clone https://github.com/twinslash/redmine_jquery_file_upload.git
 ```
+
+Install all required gems. For example
+```console
+bundle install --no-deployment --without development test --path vendor/bundle #instead '--no-deployment --without development test --path vendor/bundle' put your specific options
+```
+
 Restart server.
 
 ## Features

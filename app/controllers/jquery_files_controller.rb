@@ -1,6 +1,10 @@
+if RUBY_VERSION < '1.9.2'
+  require 'json'
+end
+require 'RMagick'
+require 'open-uri'
+
 class JqueryFilesController < ApplicationController
-  require 'RMagick'
-  require 'open-uri'
 
   unloadable
 

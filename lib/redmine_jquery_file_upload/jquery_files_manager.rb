@@ -1,3 +1,7 @@
+if RUBY_VERSION < '1.9.2'
+  require 'json'
+end
+
 module RedmineJqueryFileUpload
   class JqueryFilesManager
 
@@ -38,7 +42,8 @@ module RedmineJqueryFileUpload
         File.open(File.join(RedmineJqueryFileUpload.tmpdir, @folder, "#{order}.metadata"), 'w') do |f|
           metadata = { :filename => file.original_filename,
                        :type => file.content_type,
-                       :head => file.headers }
+                       :head => file.headers,
+                       :size => file.size }
           f.write(metadata.to_json)
         end
         return true
