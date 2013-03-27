@@ -1,14 +1,14 @@
 ru:
-  error_upload: "Ошибка: "
-  start_upload: Начать загрузку
-  to_attach_files_use_drag_drop_here_or: "Чтобы прикрепить файлы используйте drag&drop или "
-  select_files_from_your_computer: "выберите файлы с Вашего компьютера..."
-  cancel_upload: Отменить загрузки
-  delete_all: Удалить все
+  error_upload: 'Ошибка: '
+  start_upload: 'Начать загрузку'
+  to_attach_files_use_drag_drop_here_or: 'Чтобы прикрепить файлы используйте drag&drop или '
+  select_files_from_your_computer: 'выберите файлы с Вашего компьютера...'
+  cancel_upload: 'Отменить загрузки'
+  delete_all: 'Удалить все'
 
-  error_jqery_file_too_big: Превышен размер файла
-  error_jquery_empty_result: Отсутствует результат загрузки
-  error_jquery_ploaded_bytes_too_big: Количество загруженных байтов превысило размер файла
+  error_jqery_file_too_big: 'Превышен размер файла'
+  error_jquery_empty_result: 'Отсутствует результат загрузки'
+  error_jquery_ploaded_bytes_too_big: 'Количество загруженных байтов превысило размер файла'
 
   cbp_txt_add_image      : 'Добавить изображение из буфера обмена'
   cbp_txt_crop_box       : 'область кадрирования:  x={1}  y={2}  ширина={3}  высота={4}'

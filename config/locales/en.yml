@@ -1,14 +1,14 @@
 en:
-  error_upload: "Error: "
-  start_upload: Start
-  to_attach_files_use_drag_drop_here_or: "To attach files drag&drop here or "
-  select_files_from_your_computer: "select files from your computer..."
-  cancel_upload: Cancel upload
-  delete_all: Delete all
+  error_upload: 'Error: '
+  start_upload: 'Start'
+  to_attach_files_use_drag_drop_here_or: 'To attach files drag&drop here or '
+  select_files_from_your_computer: 'select files from your computer...'
+  cancel_upload: 'Cancel upload'
+  delete_all: 'Delete all'
 
-  error_jqery_file_too_big: File size limit exceeded
-  error_jquery_empty_result: Empty file upload result
-  error_jquery_ploaded_bytes_too_big: Uploaded bytes exceeded file size limit
+  error_jqery_file_too_big: 'File size limit exceeded'
+  error_jquery_empty_result: 'Empty file upload result'
+  error_jquery_ploaded_bytes_too_big: 'Uploaded bytes exceeded file size limit'
 
   cbp_txt_add_image      : 'Add picture from clipboard'
   cbp_txt_crop_box       : 'crop box:  x={1}  y={2}  width={3}  height={4}'
